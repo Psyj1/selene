@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import connect from "./config/db-connection.js";
 const app = express();
 // Importando para ser criado no banco
-import Game from "./models/Mushroo.js";
+import Game from "./models/Mushrooms.js";
 import User from "./models/Users.js";
 // Importando as rotas
 import gameRoutes from "./routes/gameRoutes.js";
