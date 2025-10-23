@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 import connect from "./config/db-connection.js";
 const app = express();
 // Importando para ser criado no banco
-import Mushroom from "./models/Mushrooms.js";
+
+import mushroom from "./models/Mushrooms.js"
 import User from "./models/Users.js";
 // Importando as rotas
 import mushroomRoutes from "./routes/mushroomRoutes.js";
