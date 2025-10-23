@@ -5,7 +5,7 @@ const JWTSecret = "apimushroom";
 
 const createUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, data, cpf, telefone, email, password } = req.body;
     await userService.Create(name, email, password);
     res.status(201).json({ success: "User registered with success" });
   } catch (error) {
@@ -49,4 +49,4 @@ const loginUser = async (req, res) => {
     res.sendStatus(500);
   }
 };
-export default { createUser, loginUser };
+export default { createUser, loginUser, JWTSecret };

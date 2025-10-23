@@ -1,11 +1,14 @@
 import User from "../models/Users.js";
 
-class UserService {
+class userService {
   // Método para CADASTRAR usuário
-  async Create(name, email, password) {
+  async Create(name, date, cpf, telefone, email, password) {
     try {
       const newUser = new User({
         name,
+        date,
+        cpf,
+        telefone,
         email,
         password,
       });
@@ -26,4 +29,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+export default new userService();
