@@ -1,23 +1,29 @@
 import express from "express";
 import mongoose from "mongoose";
 import connect from "./config/db-connection.js";
-const app = express();
-// Importando para ser criado no banco
+import cors from "cors"; // ← CONFIRME que tem esta linha
 
-import mushroom from "./models/Mushrooms.js"
-import User from "./models/Users.js";
 // Importando as rotas
 import mushroomRoutes from "./routes/mushroomRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
+const app = express();
+
+// ← CONFIRME que tem ESTE BLOCO DE CORS
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 // Configurações do Express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+// Rotas
 app.use("/", mushroomRoutes);
 app.use("/", userRoutes);
-
-//Iniciando a conexão com o banco de dados no MongoDB
-//mongoose.connect("mongodb://127.0.0.1:27017/api-thegames");
 
 // Rodando a API na porta 4000
 const port = 4000;
@@ -25,6 +31,5 @@ app.listen(port, (error) => {
   if (error) {
     console.log(error);
   }
-  console.log(`API running in http://localhost:${port}
-`);
+  console.log(`API running in http://localhost:${port}`);
 });

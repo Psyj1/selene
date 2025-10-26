@@ -1,144 +1,77 @@
-import React from 'react';
-import Head from 'next/head';
-import { useAuth } from '../hooks/useAuth';
-import LoginForm from '../components/forms/LoginForm';
-import '../styles/globals.css';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { authService } from '../services/authService';
+import styles from './index.module.css';
 
 export default function Login() {
-  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleLogin = (credentials) => {
-    console.log('Tentativa de login:', credentials);
-    // Simular login bem-sucedido
-    login({
-      id: 1,
-      name: 'Administrador',
-      email: credentials.email,
-      role: 'admin'
-    });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      console.log('🔐 Tentando login com:', { email, senha });
+      
+      const response = await authService.login(email, senha);
+      console.log('✅ Resposta do login:', response);
+      
+      localStorage.setItem('token', response.token);
+      console.log('💾 Token salvo no localStorage');
+      
+      router.push('/farms');
+    } catch (error) {
+      console.log('❌ Erro completo no login:', error);
+      console.log('📡 Status do erro:', error.response?.status);
+      console.log('📄 Dados do erro:', error.response?.data);
+      setError('Email ou senha inválidos');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <Head>
-        <title>FungoDetect - Login</title>
-        <meta name="description" content="Sistema de detecção de fungos" />
-      </Head>
-
-      <div className="login-page">
-        <div className="login-container">
-          <div className="login-hero">
-            <div className="hero-content">
-              <h1>FungoDetect</h1>
-              <h2>Sistema de Detecção de Fungos</h2>
-              <p>
-                Monitoramento inteligente de cogumelos usando aprendizagem profunda 
-                para detecção precoce de fungos parasitas.
-              </p>
-              <div className="features">
-                <div className="feature">
-                  <span>🔍</span>
-                  <span>Detecção Automática</span>
-                </div>
-                <div className="feature">
-                  <span>📊</span>
-                  <span>Monitoramento em Tempo Real</span>
-                </div>
-                <div className="feature">
-                  <span>🚨</span>
-                  <span>Alertas Imediatos</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="login-form-container">
-            <LoginForm onLogin={handleLogin} />
-          </div>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .login-page {
-          min-height: 100vh;
-          background: linear-gradient(135deg, var(--secondary-color) 0%, #2D3748 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-        }
-
-        .login-container {
-          background: var(--white);
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-          overflow: hidden;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          max-width: 1000px;
-          width: 100%;
-        }
-
-        .login-hero {
-          background: linear-gradient(135deg, var(--primary-color) 0%, #8ab350 100%);
-          color: var(--white);
-          padding: 60px 40px;
-          display: flex;
-          align-items: center;
-        }
-
-        .hero-content h1 {
-          font-size: 2.5rem;
-          margin-bottom: 8px;
-          color: var(--secondary-color);
-        }
-
-        .hero-content h2 {
-          font-size: 1.5rem;
-          margin-bottom: 20px;
-          opacity: 0.9;
-        }
-
-        .hero-content p {
-          margin-bottom: 30px;
-          line-height: 1.6;
-          opacity: 0.9;
-        }
-
-        .features {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .feature {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-weight: 500;
-        }
-
-        .feature span:first-child {
-          font-size: 1.2rem;
-        }
-
-        .login-form-container {
-          padding: 60px 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        @media (max-width: 768px) {
-          .login-container {
-            grid-template-columns: 1fr;
-          }
+    <div className={styles.container}>
+      <div className={styles.loginBox}>
+        <h1>Shimeji Vale</h1>
+        <h2>Login</h2>
+        
+        <form onSubmit={handleLogin} className={styles.form}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+          />
           
-          .login-hero {
-            padding: 40px 20px;
-          }
-        }
-      `}</style>
-    </>
+          {error && <p className={styles.error}>{error}</p>}
+          
+          <button type="submit" disabled={loading}>
+            {loading ? 'Carregando...' : 'Entrar'}
+          </button>
+        </form>
+
+        <p>
+          Não tem conta?{' '}
+          <Link href="/register" legacyBehavior>
+            <a>Cadastre-se</a>
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

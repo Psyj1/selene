@@ -4,52 +4,45 @@ import { ObjectId } from "mongodb";
 const getAllMushroom = async (req, res) => {
   try {
     const mushrooms = await mushroomService.getAll();
-    res.status(200).json({ mushrooms: mushrooms });
+    res.status(200).json(mushrooms);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error." });
   }
 };
 
-//CADASTRAR Fungo
+// CORRIGIDO: Usando todos os campos da fazenda
 const createMushroom = async (req, res) => {
   try {
-    const { title, number, status, descricao, composting } = req.body;
-    //CADAS.Banco
-    await mushroomService.Create(title, number, composting);
-    res.sendStatus(201);
+    const {
+      nome, rua, bairro, numero, cidade, estado, foco_producao,
+      area_total, area_cultivo, tipo_terreno, numero_estufas,
+      capacidade_producao, numero_compostos, status_operacional,
+      responsavel, telefone_responsavel, email_responsavel, cnpj
+    } = req.body;
+    
+    const newMushroom = await mushroomService.Create(
+      nome, rua, bairro, numero, cidade, estado, foco_producao,
+      area_total, area_cultivo, tipo_terreno, numero_estufas,
+      capacidade_producao, numero_compostos, status_operacional,
+      responsavel, telefone_responsavel, email_responsavel, cnpj
+    );
+    
+    res.status(201).json(newMushroom);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error." });
   }
 };
 
-//DELETAR FUNGO
 const deleteMushroom = async (req, res) => {
   try {
     if (ObjectId.isValid(req.params.id)) {
       const id = req.params.id;
-      mushroomService.Delete(id);
+      await mushroomService.Delete(id);
       res.sendStatus(204);
     } else {
-      res.sendStatus(400);
-    }
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500).json({ error: "Internal server error." });
-  }
-};
-
-//ALTERAR
-const updateMushroom = async (req, res) => {
-  try {
-    if (ObjectId.isValid(req.params.id)) {
-      const id = req.params.id;
-      const { title, number, status, descricao, composting } = req.body;
-      mushroomService.Update(id, title, number, status, descricao, composting);
-      res.sendStatus(200);
-    } else {
-      res.sendStatus(400);
+      res.status(400).json({ error: "ID inválido" });
     }
   } catch (error) {
     console.log(error);
@@ -57,24 +50,40 @@ const updateMushroom = async (req, res) => {
   }
 };
 
-//Buscar uma unica estufa
+// CORRIGIDO: Update simplificado
+const updateMushroom = async (req, res) => {
+  try {
+    if (ObjectId.isValid(req.params.id)) {
+      const id = req.params.id;
+      const updateData = req.body;
+      const updatedMushroom = await mushroomService.Update(id, updateData);
+      res.status(200).json(updatedMushroom);
+    } else {
+      res.status(400).json({ error: "ID inválido" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
+
 const getOneMushroom = async (req, res) => {
   try {
     if (ObjectId.isValid(req.params.id)) {
       const id = req.params.id;
       const mushroom = await mushroomService.getOne(id);
       if (!mushroom) {
-        res.sendStatus(404);
+        res.status(404).json({ error: "Fazenda não encontrada" });
       } else {
-        res.status(200).json({ mushroom });
+        res.status(200).json(mushroom);
       }
     } else {
-      res.sendStatus(400);
+      res.status(400).json({ error: "ID inválido" });
     }
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    res.status(500).json({ error: "Internal server error." });
   }
 };
 
-export default { getAllMushroom, createMushroom, deleteMushroom, updateMushroom, getOneMushroom}
+export default { getAllMushroom, createMushroom, deleteMushroom, updateMushroom, getOneMushroom };

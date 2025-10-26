@@ -1,88 +1,138 @@
-:root {
-  --primary-color: #9CC35B;
-  --secondary-color: #3C4A64;
-  --background-color: #F8FAFC;
-  --text-dark: #2D3748;
-  --text-light: #718096;
-  --white: #FFFFFF;
-  --border-color: #E2E8F0;
-}
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-dark);
+  background-color: #F8FAFC;
+  color: #3C4A64;
   line-height: 1.6;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+a {
+  color: #9CC35B;
+  text-decoration: none;
 }
 
-.card {
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  padding: 24px;
-  margin-bottom: 20px;
+a:hover {
+  text-decoration: underline;
 }
 
-.form-group {
-  margin-bottom: 20px;
+button {
+  font-family: inherit;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-dark);
+/* Classes utilitárias com as cores do Selene */
+.text-selene-green {
+  color: #9CC35B;
 }
 
-.page-header {
-  margin-bottom: 30px;
+.text-selene-blue {
+  color: #3C4A64;
 }
 
-.page-header h1 {
-  color: var(--secondary-color);
-  margin-bottom: 8px;
-  font-size: 2rem;
+.text-selene-white {
+  color: #F8FAFC;
 }
 
-.page-header p {
-  color: var(--text-light);
-  font-size: 1.1rem;
+.bg-selene-green {
+  background-color: #9CC35B;
 }
 
-/* Layout principal após login */
-.app-layout {
-  display: flex;
-  min-height: 100vh;
+.bg-selene-blue {
+  background-color: #3C4A64;
 }
 
-.main-content {
-  flex: 1;
-  margin-left: 250px;
-  background-color: var(--background-color);
-  min-height: 100vh;
-  padding: 20px;
+.bg-selene-white {
+  background-color: #F8FAFC;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .main-content {
-    margin-left: 0;
-    padding: 15px;
-  }
-  
-  .container {
-    padding: 0 15px;
-  }
+.border-selene-green {
+  border-color: #9CC35B;
+}
+
+.border-selene-blue {
+  border-color: #3C4A64;
+}
+
+:root {
+  /* CORES CLARAS (DEFAULT) */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #FFFFFF;
+  --bg-navbar: linear-gradient(180deg, #3C4A64 0%, #2c3a54 100%);
+  --text-primary: #3C4A64;
+  --text-secondary: #64748b;
+  --text-navbar: #F8FAFC;
+  --accent-primary: #9CC35B;
+  --accent-secondary: #8ab350;
+  --border-color: #e2e8f0;
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.dark-theme {
+  /* CORES EScuras */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-navbar: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-navbar: #f1f5f9;
+  --accent-primary: #9CC35B;
+  --accent-secondary: #a3d168;
+  --border-color: #334155;
+  --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+html,
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Utilizando as variáveis CSS */
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.border-color {
+  border-color: var(--border-color);
 }

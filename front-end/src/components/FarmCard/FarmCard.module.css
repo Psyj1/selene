@@ -1,0 +1,69 @@
+/* 📍 FRONTEND: components/FarmCard/FarmCard.module.css */
+/* CRIE este arquivo: */
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #4a7c3a;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.cardHeader h3 {
+  margin: 0;
+  color: #2d5016;
+  flex: 1;
+}
+
+.deleteButton {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.deleteButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.cardBody {
+  margin-bottom: 1rem;
+}
+
+.cardBody p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.active {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.inactive {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.cardFooter {
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.cardFooter p {
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
+  color: #666;
+}
