@@ -1,7 +1,8 @@
+// pages/register.js - CORRIGIDO
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { authService } from '../services/authService';
+import authService from '../services/authService'; // ← SEM as chaves {}
 import styles from './register.module.css';
 
 export default function Register() {
@@ -31,20 +32,20 @@ export default function Register() {
     setError('');
 
     try {
-    console.log('🔄 Iniciando cadastro...');
-    await authService.register(formData);
-    console.log('✅ Cadastro concluído com sucesso!');
-    setSuccess(true);
-    setTimeout(() => {
-      router.push('/');
-    }, 2000);
-  } catch (error) {
-    console.log('❌ Erro no handleSubmit:', error);
-    const errorMessage = error.response?.data?.error || 'Erro ao cadastrar usuário';
-    setError(errorMessage);
-  } finally {
-    setLoading(false);
-  }
+      console.log('🔄 Iniciando cadastro...');
+      await authService.register(formData);
+      console.log('✅ Cadastro concluído com sucesso!');
+      setSuccess(true);
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
+    } catch (error) {
+      console.log('❌ Erro no handleSubmit:', error);
+      const errorMessage = error.response?.data?.error || 'Erro ao cadastrar usuário';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (success) {

@@ -1,3 +1,4 @@
+// models/User.js
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -7,8 +8,7 @@ const userSchema = new mongoose.Schema({
   telefone: String,
   email: String,
   senha: String,
-});
+}, { collection: 'produtores' }); // ← FORÇA a collection aqui
 
 const User = mongoose.model("User", userSchema);
-
 export default User;

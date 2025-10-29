@@ -1,6 +1,7 @@
+// models/Farm.js  
 import mongoose from "mongoose";
 
-const mushroomSchema = new mongoose.Schema({
+const farmSchema = new mongoose.Schema({
   nome: String,
   rua: String,
   bairro: String,
@@ -13,14 +14,12 @@ const mushroomSchema = new mongoose.Schema({
   tipo_terreno: String,
   numero_estufas: Number,
   capacidade_producao: String,
-  numero_compostos: Number,
   status_operacional: String,
   responsavel: String,
   telefone_responsavel: String,
   email_responsavel: String,
   cnpj: String
-});
+}, { collection: 'sitios/fazendas' }); // ← FORÇA a collection aqui
 
-const mushroom = mongoose.model("mushroom", mushroomSchema);
-
-export default mushroom;
+const Farm = mongoose.model("Farm", farmSchema);
+export default Farm;

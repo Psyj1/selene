@@ -1,33 +1,36 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+// context/ThemeContext.js - ATUALIZADO
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Carrega o tema salvo no localStorage
   useEffect(() => {
-    const savedTheme = localStorage.getItem('selene-theme');
+    setMounted(true);
+    const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDark(savedTheme === 'dark');
+      // Aplica o tema no body também
+      document.body.setAttribute('data-theme', savedTheme);
     }
   }, []);
 
-  // Salva o tema no localStorage
-  useEffect(() => {
-    localStorage.setItem('selene-theme', isDark ? 'dark' : 'light');
-    
-    // Aplica a classe no body
-    if (isDark) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
-  }, [isDark]);
-
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    const themeName = newTheme ? 'dark' : 'light';
+    
+    if (mounted) {
+      localStorage.setItem('theme', themeName);
+      document.body.setAttribute('data-theme', themeName);
+    }
   };
+
+  if (!mounted) {
+    return <div style={{ visibility: 'hidden' }}>{children}</div>;
+  }
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
@@ -37,5 +40,9 @@ export function ThemeProvider({ children }) {
 }
 
 export function useTheme() {
-  return useContext(ThemeContext);
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
 }

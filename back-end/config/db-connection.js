@@ -1,17 +1,15 @@
+// db-connection.js - VERSÃO CORRIGIDA
 import mongoose from "mongoose";
 
 const dbUser = "lucasparada_db_user";
 const dbPassword = "selene123";
-const dbName = "db-selene";
+const databaseName = "systemdb";
 
 const connect = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${dbUser}:${encodeURIComponent(dbPassword)}@db-selene.c3mwmyr.mongodb.net/api-selene?retryWrites=true&w=majority&appName=db-selene`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      `mongodb+srv://${dbUser}:${encodeURIComponent(dbPassword)}@db-selene.c3mwmyr.mongodb.net/${databaseName}?retryWrites=true&w=majority&appName=db-selene`
+      // REMOVA as opções useNewUrlParser e useUnifiedTopology
     );
 
     console.log("✅ Conectado ao MongoDB com sucesso!");

@@ -1,8 +1,9 @@
+// pages/index.js (ou login.js)
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import authService  from '../services/authService';
-import styles from './index.module.css';
+import authService from '../services/authService';
+import styles from './login.module.css'; // ← CSS EXTERNO
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,7 @@ export default function Login() {
       console.log('❌ Erro completo no login:', error);
       console.log('📡 Status do erro:', error.response?.status);
       console.log('📄 Dados do erro:', error.response?.data);
-      setError('Email ou senha inválidos');
+      setError(error.message || 'Email ou senha inválidos');
     } finally {
       setLoading(false);
     }

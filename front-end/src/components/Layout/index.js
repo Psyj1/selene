@@ -1,3 +1,4 @@
+// components/Layout/index.js
 import { useRouter } from 'next/router';
 import { useTheme } from '../../context/ThemeContext';
 import styles from './Layout.module.css';
@@ -8,6 +9,7 @@ export default function Layout({ children }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     router.push('/');
   };
 
@@ -17,7 +19,7 @@ export default function Layout({ children }) {
 
   const menuItems = [
     { id: 'home', label: 'Home', path: '/farms', icon: '🏠' },
-    { id: 'relatorios', label: 'Relatórios', path: '/relatorios', icon: '📊' },
+    { id: 'relatorios', label: 'Relatórios', path: '/reports', icon: '📊' },
     { id: 'sensores', label: 'Sensores', path: '/sensores', icon: '📡' },
     { id: 'estufas', label: 'Estufas', path: '/estufas', icon: '🍄' },
     { id: 'produtores', label: 'Produtores', path: '/produtores', icon: '👨‍🌾' },
@@ -28,47 +30,47 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className={styles.container}>
-      {/* NAVBAR VERTICAL */}
+    <div className={`${styles.container} ${isDark ? styles.dark : styles.light}`}>
       <nav className={styles.navbar}>
-        <div className={styles.logo}>
-          <h1>Selene</h1>
-          <span>Sistema de Monitoramento</span>
-        </div>
-        
-        <ul className={styles.menu}>
-          {menuItems.map(item => (
-            <li key={item.id}>
-              <button 
-                onClick={() => handleNavigation(item.path)}
-                className={`${styles.menuButton} ${isActive(item.path) ? styles.active : ''}`}
-              >
-                <span className={styles.icon}>{item.icon}</span>
-                <span className={styles.label}>{item.label}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+        {/* CORREÇÃO: Container interno para controle de scroll */}
+        <div className={styles.navbarContent}>
+          <div className={styles.logo}>
+            <h1>Selene</h1>
+            <span>Sistema de Monitoramento</span>
+          </div>
+          
+          <ul className={styles.menu}>
+            {menuItems.map(item => (
+              <li key={item.id}>
+                <button 
+                  onClick={() => handleNavigation(item.path)}
+                  className={`${styles.menuButton} ${isActive(item.path) ? styles.active : ''}`}
+                >
+                  <span className={styles.icon}>{item.icon}</span>
+                  <span className={styles.label}>{item.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
 
-        <div className={styles.footer}>
-          {/* TOGGLE DE TEMA */}
-          <button onClick={toggleTheme} className={styles.themeToggle}>
-            <span className={styles.icon}>
-              {isDark ? '☀️' : '🌙'}
-            </span>
-            <span className={styles.label}>
-              {isDark ? 'Modo Claro' : 'Modo Escuro'}
-            </span>
-          </button>
+          <div className={styles.footer}>
+            <button onClick={toggleTheme} className={styles.themeToggle}>
+              <span className={styles.icon}>
+                {isDark ? '☀️' : '🌙'}
+              </span>
+              <span className={styles.label}>
+                {isDark ? 'Modo Claro' : 'Modo Escuro'}
+              </span>
+            </button>
 
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            <span className={styles.icon}>🚪</span>
-            <span className={styles.label}>Sair</span>
-          </button>
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              <span className={styles.icon}>🚪</span>
+              <span className={styles.label}>Sair</span>
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* CONTEÚDO PRINCIPAL */}
       <main className={styles.content}>
         {children}
       </main>
