@@ -1,4 +1,4 @@
-# 🍄 Detecção de Fungos Parasitas em Cogumelos usando Aprendizagem Profunda
+# 🍄 Selene - Detecção de Fungos Parasitas em Cogumelos usando Aprendizagem Profunda
 
 [![Deep Learning](https://img.shields.io/badge/Deep%20Learning-Computer%20Vision-blue)](https://pytorch.org/)
 [![IoT](https://img.shields.io/badge/IoT-Sensors-green)](https://www.arduino.cc/)
