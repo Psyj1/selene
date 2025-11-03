@@ -1,7 +1,9 @@
-/* components/SensorCard/SensorCard.module.css */
+/* SensorCard.module.css - CORES PADRONIZADAS */
+
 .card {
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent-color);
   border-radius: 12px;
   padding: 20px;
   transition: all 0.3s ease;
@@ -18,127 +20,198 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.cardHeader h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #333;
-  line-height: 1.4;
+.headerInfo {
   flex: 1;
-  margin-right: 10px;
 }
 
+.headerInfo h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.codigo {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editButton,
 .deleteButton {
-  background: #ff4444;
-  color: white;
+  background: none;
   border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  font-size: 18px;
   cursor: pointer;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  transition: background 0.3s;
-  flex-shrink: 0;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
-.deleteButton:hover:not(:disabled) {
-  background: #cc0000;
+.editButton {
+  color: var(--accent-color);
+}
+
+.editButton:hover {
+  background: rgba(156, 195, 91, 0.1);
+  transform: scale(1.1);
+}
+
+.deleteButton {
+  color: #e74c3c;
+}
+
+.deleteButton:hover {
+  background: rgba(231, 76, 60, 0.1);
+  transform: scale(1.1);
 }
 
 .deleteButton:disabled {
-  background: #ccc;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
 .cardBody {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .sensorInfo {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
-.sensorInfo p {
-  margin: 0;
+.infoItem {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  font-size: 14px;
 }
 
-.sensorInfo strong {
-  color: #333;
-  min-width: 120px;
+.label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.value {
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.valueHighlight {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 16px;
 }
 
 .meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .status {
-  padding: 4px 12px;
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .status.active {
-  background: #e8f5e8;
-  color: #2e7d32;
+  background: rgba(72, 187, 120, 0.1);
+  color: #48bb78;
 }
 
 .status.inactive {
-  background: #ffebee;
-  color: #c62828;
+  background: rgba(229, 62, 62, 0.1);
+  color: #e53e3e;
+}
+
+.status.maintenance {
+  background: rgba(245, 124, 0, 0.1);
+  color: #f57c00;
 }
 
 .status.default {
-  background: #f5f5f5;
-  color: #666;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
 }
 
 .battery {
+  padding: 4px 10px;
+  border-radius: 16px;
   font-size: 12px;
-  color: #666;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
+.batteryGood {
+  background: rgba(72, 187, 120, 0.1);
+  color: #48bb78;
+}
+
+.batteryMedium {
+  background: rgba(245, 124, 0, 0.1);
+  color: #f57c00;
+}
+
+.batteryLow {
+  background: rgba(229, 62, 62, 0.1);
+  color: #e53e3e;
+}
+
 .cardFooter {
-  display: flex;
-  gap: 10px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
 }
 
-.viewButton, .editButton {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  background: white;
-  border-radius: 6px;
-  cursor: pointer;
+.lastReading {
   font-size: 12px;
-  transition: all 0.3s;
+  color: var(--text-secondary);
+  display: block;
 }
 
-.viewButton:hover {
-  background: #f5f5f5;
-  border-color: #000;
-}
-
-.editButton:hover {
-  background: #000;
-  color: white;
-  border-color: #000;
+/* Responsivo */
+@media (max-width: 768px) {
+  .cardHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .actions {
+    align-self: flex-end;
+  }
+  
+  .infoItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }

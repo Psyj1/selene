@@ -1,376 +1,208 @@
-// pages/sensors.js
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { sensorService } from '../services/sensorService';
 import Layout from '../components/Layout';
+import SensorCard from '../components/SensorCard';
+import SensorFormModal from '../components/SensorFormModal';
+import styles from './sensores.module.css';
 
-export default function Sensors() {
+export default function Sensores() {
   const [sensors, setSensors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
-  const router = useRouter();
+  const [error, setError] = useState('');
+  const [filter, setFilter] = useState('all');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sensorToEdit, setSensorToEdit] = useState(null);
 
   useEffect(() => {
-    setMounted(true);
-    // Simula carregamento de dados
-    setTimeout(() => {
-      setSensors([
-        {
-          _id: '1',
-          nome: 'Sensor de Temperatura 01',
-          tipo: 'Temperatura', 
-          localizacao: 'Estufa A',
-          status: 'Ativo',
-          bateria: '85',
-          ultimaLeitura: '2024-01-15 14:30'
-        },
-        {
-          _id: '2', 
-          nome: 'Sensor de Umidade 01',
-          tipo: 'Umidade',
-          localizacao: 'Estufa B',
-          status: 'Ativo',
-          bateria: '72',
-          ultimaLeitura: '2024-01-15 14:25'
-        }
-      ]);
-      setLoading(false);
-    }, 1500);
+    loadSensors();
   }, []);
 
-  const handleAddSensor = () => {
-    router.push('/sensor-create');
+  const loadSensors = async () => {
+    try {
+      setLoading(true);
+      const sensorsData = await sensorService.getAllSensors();
+      setSensors(sensorsData);
+      setError('');
+    } catch (error) {
+      setError('Erro ao carregar sensores');
+      console.error('Erro:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Evita hydration
-  if (!mounted) {
-    return (
-      <Layout>
-        <div style={{ minHeight: '400px' }}></div>
-      </Layout>
-    );
-  }
+  const handleOpenModal = (sensor = null) => {
+    setSensorToEdit(sensor);
+    setIsModalOpen(true);
+  };
 
-  if (loading) {
-    return (
-      <Layout>
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '100px 20px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <div style={{
-            border: '4px solid #f3f3f3',
-            borderTop: '4px solid #000',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
-            animation: 'spin 1s linear infinite',
-            marginBottom: '20px'
-          }}></div>
-          <h3 style={{ color: '#333', marginBottom: '10px' }}>Carregando Sensores</h3>
-          <p style={{ color: '#666' }}>Buscando dados dos sensores...</p>
-        </div>
-      </Layout>
-    );
-  }
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSensorToEdit(null);
+  };
+
+  const handleSuccess = () => {
+    loadSensors();
+  };
+
+  const filteredSensors = sensors.filter(sensor => {
+    if (filter === 'all') return true;
+    return sensor.status === filter;
+  });
+
+  if (loading) return (
+    <Layout>
+      <div className={styles.loading}>
+        <div className={styles.spinner}></div>
+        <p>Carregando sensores...</p>
+      </div>
+    </Layout>
+  );
+  
+  if (error) return (
+    <Layout>
+      <div className={styles.error}>
+        <h3>❌ Erro ao carregar</h3>
+        <p>{error}</p>
+        <button onClick={loadSensors} className={styles.retryButton}>
+          🔄 Tentar novamente
+        </button>
+      </div>
+    </Layout>
+  );
 
   return (
     <Layout>
-      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-        
-        {/* HEADER */}
-        <header style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '40px',
-          paddingBottom: '20px',
-          borderBottom: '1px solid #e0e0e0'
-        }}>
-          <div>
-            <h1 style={{ 
-              fontSize: '32px', 
-              color: '#333', 
-              marginBottom: '8px',
-              fontWeight: '700'
-            }}>
-              📡 Sensores
-            </h1>
-            <p style={{ 
-              color: '#666', 
-              margin: 0,
-              fontSize: '16px'
-            }}>
-              Monitoramento em tempo real dos sensores do sistema
-            </p>
+      <div className={styles.dashboard}>
+        <header className={styles.dashboardHeader}>
+          <div className={styles.headerContent}>
+            <h1>📡 Sensores</h1>
+            <p>Monitoramento em tempo real dos sensores do sistema</p>
           </div>
-          <button onClick={handleAddSensor} style={{
-            background: '#000',
-            color: 'white',
-            border: 'none',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}>
+          <button onClick={() => handleOpenModal()} className={styles.addButton}>
             + Novo Sensor
           </button>
         </header>
 
-        {/* CARDS DE RESUMO */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '20px',
-          marginBottom: '40px'
-        }}>
-          <div style={{
-            background: 'white',
-            padding: '24px',
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px'
-          }}>
-            <div style={{
-              fontSize: '32px',
-              width: '60px',
-              height: '60px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: '#f8f9fa',
-              borderRadius: '12px'
-            }}>📡</div>
-            <div>
-              <h3 style={{
-                fontSize: '14px',
-                color: '#666',
-                margin: '0 0 8px 0',
-                textTransform: 'uppercase'
-              }}>Total de Sensores</h3>
-              <span style={{
-                fontSize: '32px',
-                fontWeight: 'bold',
-                color: '#000',
-                display: 'block'
-              }}>{sensors.length}</span>
+        <div className={styles.summaryCards}>
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>📡</div>
+            <div className={styles.cardContent}>
+              <h3>Total de Sensores</h3>
+              <span className={styles.number}>{sensors.length}</span>
+              <span className={styles.label}>dispositivos</span>
             </div>
           </div>
-
-          <div style={{
-            background: 'white',
-            padding: '24px',
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px'
-          }}>
-            <div style={{
-              fontSize: '32px',
-              width: '60px',
-              height: '60px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: '#f8f9fa',
-              borderRadius: '12px'
-            }}>✅</div>
-            <div>
-              <h3 style={{
-                fontSize: '14px',
-                color: '#666',
-                margin: '0 0 8px 0',
-                textTransform: 'uppercase'
-              }}>Sensores Ativos</h3>
-              <span style={{
-                fontSize: '32px',
-                fontWeight: 'bold',
-                color: '#000',
-                display: 'block'
-              }}>
+          
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>✅</div>
+            <div className={styles.cardContent}>
+              <h3>Sensores Ativos</h3>
+              <span className={styles.number}>
                 {sensors.filter(s => s.status === 'Ativo').length}
               </span>
+              <span className={styles.label}>online</span>
+            </div>
+          </div>
+          
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>❌</div>
+            <div className={styles.cardContent}>
+              <h3>Inativos</h3>
+              <span className={styles.number}>
+                {sensors.filter(s => s.status === 'Inativo').length}
+              </span>
+              <span className={styles.label}>offline</span>
+            </div>
+          </div>
+          
+          <div className={styles.card}>
+            <div className={styles.cardIcon}>🔧</div>
+            <div className={styles.cardContent}>
+              <h3>Manutenção</h3>
+              <span className={styles.number}>
+                {sensors.filter(s => s.status === 'Manutenção').length}
+              </span>
+              <span className={styles.label}>em reparo</span>
             </div>
           </div>
         </div>
 
-        {/* LISTA DE SENSORES */}
-        <section style={{
-          background: 'white',
-          borderRadius: '12px',
-          padding: '30px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '24px'
-          }}>
+        <div className={styles.controls}>
+          <div className={styles.filters}>
+            <button 
+              className={`${styles.filterButton} ${filter === 'all' ? styles.active : ''}`}
+              onClick={() => setFilter('all')}
+            >
+              Todos ({sensors.length})
+            </button>
+            <button 
+              className={`${styles.filterButton} ${filter === 'Ativo' ? styles.active : ''}`}
+              onClick={() => setFilter('Ativo')}
+            >
+              Ativos ({sensors.filter(s => s.status === 'Ativo').length})
+            </button>
+            <button 
+              className={`${styles.filterButton} ${filter === 'Inativo' ? styles.active : ''}`}
+              onClick={() => setFilter('Inativo')}
+            >
+              Inativos ({sensors.filter(s => s.status === 'Inativo').length})
+            </button>
+            <button 
+              className={`${styles.filterButton} ${filter === 'Manutenção' ? styles.active : ''}`}
+              onClick={() => setFilter('Manutenção')}
+            >
+              Manutenção ({sensors.filter(s => s.status === 'Manutenção').length})
+            </button>
+          </div>
+        </div>
+
+        <section className={styles.sensorsSection}>
+          <div className={styles.sectionHeader}>
             <div>
-              <h2 style={{ 
-                color: '#333', 
-                margin: '0',
-                fontSize: '24px'
-              }}>
-                Sensores Cadastrados
-              </h2>
-              <span style={{
-                color: '#666',
-                fontSize: '14px',
-                display: 'block',
-                marginTop: '4px'
-              }}>
-                {sensors.length} sensores encontrados
+              <h2>📋 Sensores Cadastrados</h2>
+              <span className={styles.count}>
+                {filteredSensors.length} {filteredSensors.length === 1 ? 'sensor' : 'sensores'}
               </span>
             </div>
           </div>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: '20px'
-          }}>
-            {sensors.map(sensor => (
-              <div key={sensor._id} style={{
-                background: 'white',
-                border: '1px solid #e0e0e0',
-                borderRadius: '12px',
-                padding: '20px',
-                transition: 'all 0.3s ease'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  marginBottom: '16px'
-                }}>
-                  <h3 style={{
-                    margin: '0',
-                    fontSize: '18px',
-                    color: '#333',
-                    flex: '1',
-                    marginRight: '10px'
-                  }}>{sensor.nome}</h3>
-                </div>
-                
-                <div style={{ marginBottom: '20px' }}>
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '8px',
-                    marginBottom: '16px'
-                  }}>
-                    <p style={{ margin: '0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <strong style={{ color: '#333', minWidth: '80px' }}>Tipo:</strong> 
-                      {sensor.tipo}
-                    </p>
-                    <p style={{ margin: '0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <strong style={{ color: '#333', minWidth: '80px' }}>Localização:</strong> 
-                      {sensor.localizacao}
-                    </p>
-                    <p style={{ margin: '0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <strong style={{ color: '#333', minWidth: '80px' }}>Bateria:</strong> 
-                      🔋 {sensor.bateria}%
-                    </p>
-                  </div>
-                  
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
-                    <span style={{
-                      padding: '4px 12px',
-                      borderRadius: '20px',
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      background: sensor.status === 'Ativo' ? '#e8f5e8' : '#ffebee',
-                      color: sensor.status === 'Ativo' ? '#2e7d32' : '#c62828'
-                    }}>
-                      {sensor.status}
-                    </span>
-                    <span style={{
-                      fontSize: '12px',
-                      color: '#666'
-                    }}>
-                      📅 {sensor.ultimaLeitura}
-                    </span>
-                  </div>
-                </div>
-
-                <div style={{
-                  display: 'flex',
-                  gap: '10px',
-                  borderTop: '1px solid #f0f0f0',
-                  paddingTop: '16px'
-                }}>
-                  <button style={{
-                    flex: '1',
-                    padding: '8px 12px',
-                    border: '1px solid #e0e0e0',
-                    background: 'white',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '12px'
-                  }}>
-                    📊 Ver Dados
-                  </button>
-                  <button style={{
-                    flex: '1',
-                    padding: '8px 12px',
-                    border: '1px solid #e0e0e0',
-                    background: 'white',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '12px'
-                  }}>
-                    ⚙️ Configurar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {sensors.length === 0 && (
-            <div style={{
-              textAlign: 'center',
-              padding: '60px 20px',
-              color: '#666'
-            }}>
-              <div style={{ fontSize: '48px', marginBottom: '16px' }}>📡</div>
-              <h3 style={{ color: '#333', marginBottom: '8px' }}>Nenhum sensor encontrado</h3>
-              <p>Comece adicionando o primeiro sensor ao sistema</p>
-              <button onClick={handleAddSensor} style={{
-                background: '#000',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                marginTop: '16px',
-                cursor: 'pointer'
-              }}>
-                + Adicionar Primeiro Sensor
-              </button>
+          {filteredSensors.length === 0 ? (
+            <div className={styles.empty}>
+              <div className={styles.emptyIcon}>📡</div>
+              <h3>Nenhum sensor encontrado</h3>
+              <p>
+                {filter === 'all' 
+                  ? 'Comece adicionando o primeiro sensor ao sistema' 
+                  : `Nenhum sensor com status "${filter}"`}
+              </p>
+              {filter === 'all' && (
+                <button onClick={() => handleOpenModal()} className={styles.emptyButton}>
+                  + Adicionar Primeiro Sensor
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className={styles.sensorsGrid}>
+              {filteredSensors.map(sensor => (
+                <SensorCard 
+                  key={sensor._id} 
+                  sensor={sensor} 
+                  onUpdate={loadSensors}
+                  onEdit={handleOpenModal}
+                />
+              ))}
             </div>
           )}
         </section>
       </div>
 
-      <style jsx>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-      `}</style>
+      <SensorFormModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSuccess={handleSuccess}
+        sensorToEdit={sensorToEdit}
+      />
     </Layout>
   );
 }

@@ -1,4 +1,4 @@
-/* pages/reports.module.css - CORES PADRONIZADAS */
+/* pages/sensores.module.css - CORES PADRONIZADAS */
 
 .dashboard {
   padding: 20px;
@@ -135,7 +135,7 @@
   border-color: var(--accent-color);
 }
 
-.reportsSection {
+.sensorsSection {
   margin-top: 40px;
 }
 
@@ -157,7 +157,7 @@
   color: var(--text-secondary);
 }
 
-.reportsGrid {
+.sensorsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 20px;
@@ -286,7 +286,7 @@
     grid-template-columns: 1fr;
   }
   
-  .reportsGrid {
+  .sensorsGrid {
     grid-template-columns: 1fr;
   }
   

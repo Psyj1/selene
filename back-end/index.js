@@ -12,13 +12,13 @@ app.use(cors({
   credentials: true
 }));
 
-
 // Importando as rotas
 import mushroomRoutes from "./routes/farmRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import compostingRoutes from "./routes/compostingRoutes.js";
 import greenhouseRoutes from "./routes/greenhouseRoutes.js";
 import reportsRoutes from "./routes/reportsRoutes.js";
+import sensorRoutes from "./routes/sensorRoutes.js"; // ✅ <-- Adicionado
 
 // Configurações do Express
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +30,7 @@ app.use("/", userRoutes);
 app.use("/", compostingRoutes);
 app.use("/", greenhouseRoutes);
 app.use("/", reportsRoutes);
+app.use("/", sensorRoutes); // ✅ <-- Adicionado
 
 // Rodando a API na porta 4000
 const port = 4000;

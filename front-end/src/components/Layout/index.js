@@ -1,4 +1,3 @@
-// components/Layout/index.js
 import { useRouter } from 'next/router';
 import { useTheme } from '../../context/ThemeContext';
 import styles from './Layout.module.css';
@@ -18,10 +17,11 @@ export default function Layout({ children }) {
   };
 
   const menuItems = [
-    { id: 'home', label: 'Home', path: '/farms', icon: '🏠' },
-    { id: 'relatorios', label: 'Relatórios', path: '/reports', icon: '📊' },
-    { id: 'sensores', label: 'Sensores', path: '/sensores', icon: '📡' },
+    { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: '📊' },
+    { id: 'home', label: 'Fazendas', path: '/farms', icon: '🏠' },
     { id: 'estufas', label: 'Estufas', path: '/estufas', icon: '🍄' },
+    { id: 'sensores', label: 'Sensores', path: '/sensores', icon: '📡' },
+    { id: 'relatorios', label: 'Relatórios', path: '/reports', icon: '📋' },
     { id: 'produtores', label: 'Produtores', path: '/produtores', icon: '👨‍🌾' },
   ];
 
@@ -32,7 +32,6 @@ export default function Layout({ children }) {
   return (
     <div className={`${styles.container} ${isDark ? styles.dark : styles.light}`}>
       <nav className={styles.navbar}>
-        {/* CORREÇÃO: Container interno para controle de scroll */}
         <div className={styles.navbarContent}>
           <div className={styles.logo}>
             <h1>Selene</h1>
