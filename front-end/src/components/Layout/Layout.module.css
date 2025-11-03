@@ -1,0 +1,293 @@
+/* components/Layout/Layout.module.css */
+
+/* VARIÁVEIS COM A PALETA DO PROJETO */
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* TEMA CLARO */
+.container.light {
+  --primary-green: #9CC35B;
+  --primary-blue: #3C4A64;
+  --primary-light: #F8FAFC;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --text-primary: #3C4A64;
+  --text-secondary: #6B7280;
+  --text-navbar: #FFFFFF;
+  --accent-primary: #9CC35B;
+  --border-color: #E5E7EB;
+  --navbar-bg: #3C4A64;
+  --card-bg: #FFFFFF;
+  --hover-light: rgba(156, 195, 91, 0.1);
+}
+
+/* TEMA ESCURO */
+.container.dark {
+  --primary-green: #9CC35B;
+  --primary-blue: #4A5B7C;
+  --primary-light: #1F2937;
+  --bg-primary: #111827;
+  --bg-secondary: #1F2937;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --text-navbar: #F9FAFB;
+  --accent-primary: #9CC35B;
+  --border-color: #374151;
+  --navbar-bg: #1F2937;
+  --card-bg: #1F2937;
+  --hover-light: rgba(156, 195, 91, 0.2);
+}
+
+/* APLICA AS VARIÁVEIS */
+.container {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.navbar {
+  width: 250px;
+  background: var(--navbar-bg);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  border-right: 1px solid var(--border-color);
+  overflow: hidden; /* Impede corte externo */
+}
+
+.navbarContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Scroll interno se necessário */
+  padding-right: 4px; /* Espaço para scrollbar */
+}
+
+.logo {
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+  flex-shrink: 0; /* Não encolhe */
+}
+
+.logo h1 {
+  color: var(--primary-green);
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.logo span {
+  color: var(--text-navbar);
+  font-size: 0.7rem;
+  display: block;
+  margin-top: 0.25rem;
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.menu {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 1rem 0; /* Padding na bottom para espaço */
+  flex: 1;
+  overflow-y: auto; /* Scroll no menu se necessário */
+  min-height: 0; /* Importante para flex scroll */
+}
+
+.menu li {
+  margin-bottom: 0.25rem;
+}
+
+.menuButton {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-navbar);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.menuButton:hover {
+  background-color: var(--hover-light);
+  opacity: 1;
+}
+
+.menuButton.active {
+  background-color: var(--primary-green);
+  color: var(--navbar-bg);
+  opacity: 1;
+  font-weight: 600;
+}
+
+.menuButton.active .icon {
+  opacity: 1;
+}
+
+.icon {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0; /* Não encolhe */
+  position: sticky;
+  bottom: 0;
+  background: var(--navbar-bg);
+  padding-bottom: 0.5rem;
+}
+
+.themeToggle,
+.logoutButton {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-navbar);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0.9;
+  flex-shrink: 0; /* Não encolhe */
+}
+
+.themeToggle:hover,
+.logoutButton:hover {
+  background: var(--hover-light);
+  opacity: 1;
+}
+
+.content {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 250px;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Scrollbar personalizada */
+.navbarContent::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navbarContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navbarContent::-webkit-scrollbar-thumb {
+  background: var(--primary-green);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.navbarContent::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .navbar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .navbarContent {
+    height: auto;
+    overflow: visible;
+  }
+  
+  .content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    overflow: visible;
+    padding: 0;
+  }
+  
+  .menu li {
+    flex: 1;
+    min-width: 120px;
+    margin-bottom: 0;
+  }
+  
+  .menuButton {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .logo {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .footer {
+    position: relative;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding-bottom: 0;
+  }
+  
+  .themeToggle,
+  .logoutButton {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Animações suaves */
+.menuButton,
+.themeToggle,
+.logoutButton {
+  transition: all 0.2s ease;
+}
+
+/* Garante que o tema seja aplicado corretamente */
+.container * {
+  box-sizing: border-box;
+}

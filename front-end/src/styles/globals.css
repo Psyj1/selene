@@ -1,0 +1,69 @@
+/* styles/globals.css */
+:root {
+  /* PALETA DO PROJETO */
+  --primary-green: #9CC35B;
+  --primary-blue: #3C4A64;
+  --primary-light: #F8FAFC;
+  
+  /* Cores base - tema claro */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --text-primary: #3C4A64;
+  --text-secondary: #6B7280;
+  --border-color: #E5E7EB;
+  --accent-color: #9CC35B;
+  --card-bg: #FFFFFF;
+  --hover-light: rgba(156, 195, 91, 0.1);
+}
+
+/* Tema escuro */
+[data-theme="dark"] {
+  --bg-primary: #111827;
+  --bg-secondary: #1F2937;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --border-color: #374151;
+  --accent-color: #9CC35B;
+  --card-bg: #1F2937;
+  --hover-light: rgba(156, 195, 91, 0.2);
+}
+
+/* Estilos base */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Elementos comuns que precisam herdar as cores */
+button, input, select, textarea {
+  color: var(--text-primary);
+}
+
+/* Cards e containers */
+.card, .container-box {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Links */
+a {
+  color: var(--primary-green);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-blue);
+}
+
+/* Transição suave para todos os elementos */
+* {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}

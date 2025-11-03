@@ -1,22 +1,36 @@
 import express from "express";
 import mongoose from "mongoose";
-import connect from "./config/db-connection.js";
+import cors from "cors";
+
+import "../back-end/config/db-connection.js";
 const app = express();
-// Importando para ser criado no banco
-import Game from "./models/Mushroo.js";
-import User from "./models/Users.js";
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
+
 // Importando as rotas
-import gameRoutes from "./routes/gameRoutes.js";
+import mushroomRoutes from "./routes/farmRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import compostingRoutes from "./routes/compostingRoutes.js";
+import greenhouseRoutes from "./routes/greenhouseRoutes.js";
+import reportsRoutes from "./routes/reportsRoutes.js";
+import sensorRoutes from "./routes/sensorRoutes.js"; // ✅ <-- Adicionado
 
 // Configurações do Express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use("/", gameRoutes);
-app.use("/", userRoutes);
 
-//Iniciando a conexão com o banco de dados no MongoDB
-//mongoose.connect("mongodb://127.0.0.1:27017/api-thegames");
+// Rotas
+app.use("/", mushroomRoutes);
+app.use("/", userRoutes);
+app.use("/", compostingRoutes);
+app.use("/", greenhouseRoutes);
+app.use("/", reportsRoutes);
+app.use("/", sensorRoutes); // ✅ <-- Adicionado
 
 // Rodando a API na porta 4000
 const port = 4000;
@@ -24,6 +38,5 @@ app.listen(port, (error) => {
   if (error) {
     console.log(error);
   }
-  console.log(`API running in http://localhost:${port}
-`);
+  console.log(`API running in http://localhost:${port}`);
 });
